@@ -26,8 +26,8 @@ resources:
   repositories:
   - repository: sonic-mgmt-common
     type: github
-    name: sonic-net/sonic-mgmt-common
-    endpoint: sonic-net
+    name: arthur-cog-sonic/sonic-mgmt-common
+    endpoint: arthur-cog-sonic
     ref: refs/heads/$(BUILD_BRANCH)
 
 stages:
@@ -37,8 +37,7 @@ stages:
     displayName: "build"
     timeoutInMinutes: 60
 
-    pool:
-      vmImage: ubuntu-latest
+    pool: sonic-build
 
     container:
       image: sonicdev-microsoft.azurecr.io:443/sonic-slave-bookworm:latest
@@ -58,7 +57,7 @@ stages:
       inputs:
         source: specific
         project: build
-        pipeline: Azure.sonic-buildimage.official.vs
+        pipeline: arthur-cog-sonic.sonic-buildimage
         artifact: sonic-buildimage.vs
         runVersion: 'latestFromBranch'
         runBranch: 'refs/heads/$(BUILD_BRANCH)'
