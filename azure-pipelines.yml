@@ -56,7 +56,7 @@ stages:
     - task: DownloadPipelineArtifact@2
       inputs:
         source: specific
-        project: build
+        project: '$(System.TeamProject)'
         pipeline: arthur-cog-sonic.sonic-buildimage
         artifact: sonic-buildimage.vs
         runVersion: 'latestFromBranch'
