@@ -55,7 +55,7 @@ stages:
 
     - task: DownloadPipelineArtifact@2
       inputs:
-        source: specific
+        # source: specific
         project: build
         pipeline: arthur-cog-sonic.sonic-buildimage
         artifact: sonic-buildimage.vs
