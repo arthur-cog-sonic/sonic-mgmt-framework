@@ -1,0 +1,15 @@
+{% if json_output %}
+
+{% set auth = json_output.get("authentication", {}) %}
+{% set authz = json_output.get("authorization", {}) %}
+{% set acct = json_output.get("accounting", {}) %}
+
+AAA authentication login {{ auth.get("login", "local (default)") }}
+AAA authentication failthrough {{ auth.get("failthrough", "False (default)") }}
+AAA authentication fallback {{ auth.get("fallback", "False (default)") }}
+AAA authentication debug {{ auth.get("debug", "False (default)") }}
+AAA authentication trace {{ auth.get("trace", "False (default)") }}
+AAA authorization login {{ authz.get("login", "local (default)") }}
+AAA accounting login {{ acct.get("login", "disable (default)") }}
+
+{% endif %}

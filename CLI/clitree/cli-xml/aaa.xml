@@ -1,0 +1,166 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!--
+Copyright 2019 Dell, Inc.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+<CLISH_MODULE xmlns="http://www.dellemc.com/sonic/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xi="http://www.w3.org/2001/XInclude" xsi:schemaLocation="http://www.dellemc.com/sonic/XMLSchema http://www.dellemc.com/sonic/XMLSchema/clish.xsd">
+
+  <!--=======================================================-->
+  <!-- AAA Parameter Types -->
+  <!--=======================================================-->
+  <PTYPE
+      name="AAA_ENABLE_DISABLE_DEFAULT"
+      method="select"
+      pattern="enable(enable) disable(disable) default(default)"
+      help="enable|disable|default"
+      />
+
+  <PTYPE
+      name="AAA_AUTH_METHOD"
+      method="select"
+      pattern="local(local) tacacs+(tacacs+) radius(radius) ldap(ldap)"
+      help="local|tacacs+|radius|ldap"
+      />
+
+  <PTYPE
+      name="AAA_AUTHZ_METHOD"
+      method="select"
+      pattern="local(local) tacacs+(tacacs+)"
+      help="local|tacacs+"
+      />
+
+  <PTYPE
+      name="AAA_ACCT_METHOD"
+      method="select"
+      pattern="disable(disable) local(local) tacacs+(tacacs+)"
+      help="disable|local|tacacs+"
+      />
+
+  <!--=======================================================-->
+  <!-- MODE : config terminal - AAA commands -->
+  <!--=======================================================-->
+  <VIEW name="configure-view">
+    <!-- aaa command group -->
+    <COMMAND name="aaa" help="AAA configuration">
+      <ACTION builtin="clish_nop"/>
+    </COMMAND>
+
+    <!-- aaa authentication command group -->
+    <COMMAND name="aaa authentication" help="AAA authentication configuration">
+      <ACTION builtin="clish_nop"/>
+    </COMMAND>
+
+    <!-- aaa authentication failthrough -->
+    <COMMAND name="aaa authentication failthrough" help="Allow AAA fail-through">
+      <PARAM name="option" help="Enable/disable/default failthrough" ptype="AAA_ENABLE_DISABLE_DEFAULT"> </PARAM>
+      <ACTION builtin="clish_pyobj">sonic_cli_aaa patch_openconfig_aaa_aaa_authentication_failthrough ${option}</ACTION>
+    </COMMAND>
+
+    <!-- aaa authentication fallback -->
+    <COMMAND name="aaa authentication fallback" help="Allow AAA fallback">
+      <PARAM name="option" help="Enable/disable/default fallback" ptype="AAA_ENABLE_DISABLE_DEFAULT"> </PARAM>
+      <ACTION builtin="clish_pyobj">sonic_cli_aaa patch_openconfig_aaa_aaa_authentication_fallback ${option}</ACTION>
+    </COMMAND>
+
+    <!-- aaa authentication debug -->
+    <COMMAND name="aaa authentication debug" help="Enable/disable AAA debugging">
+      <PARAM name="option" help="Enable/disable/default debug" ptype="AAA_ENABLE_DISABLE_DEFAULT"> </PARAM>
+      <ACTION builtin="clish_pyobj">sonic_cli_aaa patch_openconfig_aaa_aaa_authentication_debug ${option}</ACTION>
+    </COMMAND>
+
+    <!-- aaa authentication trace -->
+    <COMMAND name="aaa authentication trace" help="Enable/disable AAA packet trace">
+      <PARAM name="option" help="Enable/disable/default trace" ptype="AAA_ENABLE_DISABLE_DEFAULT"> </PARAM>
+      <ACTION builtin="clish_pyobj">sonic_cli_aaa patch_openconfig_aaa_aaa_authentication_trace ${option}</ACTION>
+    </COMMAND>
+
+    <!-- aaa authentication login - single method -->
+    <COMMAND name="aaa authentication login" help="Set authentication methods for login">
+      <PARAM name="method1" help="First authentication method" ptype="AAA_AUTH_METHOD">
+        <PARAM name="method2" help="Second authentication method (optional)" ptype="AAA_AUTH_METHOD" optional="true"> </PARAM>
+      </PARAM>
+      <ACTION builtin="clish_pyobj">sonic_cli_aaa patch_openconfig_aaa_aaa_authentication_login ${method1} ${method2}</ACTION>
+    </COMMAND>
+
+    <!-- aaa authentication login default -->
+    <COMMAND name="aaa authentication login default" help="Reset authentication methods to default">
+      <ACTION builtin="clish_pyobj">sonic_cli_aaa delete_openconfig_aaa_aaa_authentication_login</ACTION>
+    </COMMAND>
+
+    <!-- aaa authorization -->
+    <COMMAND name="aaa authorization" help="AAA authorization configuration">
+      <PARAM name="method1" help="First authorization method" ptype="AAA_AUTHZ_METHOD">
+        <PARAM name="method2" help="Second authorization method (optional)" ptype="AAA_AUTHZ_METHOD" optional="true"> </PARAM>
+      </PARAM>
+      <ACTION builtin="clish_pyobj">sonic_cli_aaa patch_openconfig_aaa_aaa_authorization_login ${method1} ${method2}</ACTION>
+    </COMMAND>
+
+    <!-- aaa accounting -->
+    <COMMAND name="aaa accounting" help="AAA accounting configuration">
+      <PARAM name="method1" help="First accounting method" ptype="AAA_ACCT_METHOD">
+        <PARAM name="method2" help="Second accounting method (optional)" ptype="AAA_ACCT_METHOD" optional="true"> </PARAM>
+      </PARAM>
+      <ACTION builtin="clish_pyobj">sonic_cli_aaa patch_openconfig_aaa_aaa_accounting_login ${method1} ${method2}</ACTION>
+    </COMMAND>
+
+    <!-- no aaa commands -->
+    <COMMAND name="no aaa" help="Negate AAA configuration">
+      <ACTION builtin="clish_nop"/>
+    </COMMAND>
+
+    <COMMAND name="no aaa authentication" help="Negate AAA authentication configuration">
+      <ACTION builtin="clish_nop"/>
+    </COMMAND>
+
+    <COMMAND name="no aaa authentication failthrough" help="Reset failthrough to default">
+      <ACTION builtin="clish_pyobj">sonic_cli_aaa delete_openconfig_aaa_aaa_authentication_failthrough</ACTION>
+    </COMMAND>
+
+    <COMMAND name="no aaa authentication fallback" help="Reset fallback to default">
+      <ACTION builtin="clish_pyobj">sonic_cli_aaa delete_openconfig_aaa_aaa_authentication_fallback</ACTION>
+    </COMMAND>
+
+    <COMMAND name="no aaa authentication debug" help="Reset debug to default">
+      <ACTION builtin="clish_pyobj">sonic_cli_aaa delete_openconfig_aaa_aaa_authentication_debug</ACTION>
+    </COMMAND>
+
+    <COMMAND name="no aaa authentication trace" help="Reset trace to default">
+      <ACTION builtin="clish_pyobj">sonic_cli_aaa delete_openconfig_aaa_aaa_authentication_trace</ACTION>
+    </COMMAND>
+
+    <COMMAND name="no aaa authentication login" help="Reset login methods to default">
+      <ACTION builtin="clish_pyobj">sonic_cli_aaa delete_openconfig_aaa_aaa_authentication_login</ACTION>
+    </COMMAND>
+
+    <COMMAND name="no aaa authorization" help="Reset authorization to default">
+      <ACTION builtin="clish_pyobj">sonic_cli_aaa delete_openconfig_aaa_aaa_authorization_login</ACTION>
+    </COMMAND>
+
+    <COMMAND name="no aaa accounting" help="Reset accounting to default">
+      <ACTION builtin="clish_pyobj">sonic_cli_aaa delete_openconfig_aaa_aaa_accounting_login</ACTION>
+    </COMMAND>
+
+  </VIEW>
+
+  <!--=======================================================-->
+  <!-- MODE : show commands view -->
+  <!--=======================================================-->
+  <VIEW name="enable-view">
+    <!-- show aaa -->
+    <COMMAND name="show aaa" help="Show AAA configuration">
+      <ACTION builtin="clish_pyobj">sonic_cli_aaa get_openconfig_aaa_aaa show_aaa.j2</ACTION>
+    </COMMAND>
+  </VIEW>
+
+</CLISH_MODULE>
