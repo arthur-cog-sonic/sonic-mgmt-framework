@@ -1,0 +1,106 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE CLISH_MODULE [
+]>
+<CLISH_MODULE xmlns="http://www.dellemc.com/sonic/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xi="http://www.w3.org/2001/XInclude" xsi:schemaLocation="http://www.dellemc.com/sonic/XMLSchema http://www.dellemc.com/sonic/XMLSchema/clish.xsd">
+
+  <!--MODE : config terminal -->
+  <VIEW name="configure-view">
+    <COMMAND name="aaa" help="AAA configuration"> </COMMAND>
+    <COMMAND name="aaa authentication" help="AAA authentication configuration"> </COMMAND>
+
+    <!-- aaa authentication failthrough -->
+    <COMMAND name="aaa authentication failthrough" help="Allow AAA fail-through">
+      <PARAM name="failthrough-option" help="Enable, disable, or reset to default" ptype="SUBCOMMAND" mode="switch">
+        <PARAM name="enable" help="Enable failthrough" ptype="SUBCOMMAND" mode="subcommand"> </PARAM>
+        <PARAM name="disable" help="Disable failthrough" ptype="SUBCOMMAND" mode="subcommand"> </PARAM>
+        <PARAM name="default" help="Reset failthrough to default" ptype="SUBCOMMAND" mode="subcommand"> </PARAM>
+      </PARAM>
+      <ACTION builtin="clish_pyobj">sonic_cli_aaa patch_openconfig_aaa_aaa_authentication_config_failthrough ${failthrough-option} </ACTION>
+    </COMMAND>
+
+    <!-- aaa authentication fallback -->
+    <COMMAND name="aaa authentication fallback" help="Allow AAA fallback">
+      <PARAM name="fallback-option" help="Enable, disable, or reset to default" ptype="SUBCOMMAND" mode="switch">
+        <PARAM name="enable" help="Enable fallback" ptype="SUBCOMMAND" mode="subcommand"> </PARAM>
+        <PARAM name="disable" help="Disable fallback" ptype="SUBCOMMAND" mode="subcommand"> </PARAM>
+        <PARAM name="default" help="Reset fallback to default" ptype="SUBCOMMAND" mode="subcommand"> </PARAM>
+      </PARAM>
+      <ACTION builtin="clish_pyobj">sonic_cli_aaa patch_openconfig_aaa_aaa_authentication_config_fallback ${fallback-option} </ACTION>
+    </COMMAND>
+
+    <!-- aaa authentication debug -->
+    <COMMAND name="aaa authentication debug" help="AAA debug mode">
+      <PARAM name="debug-option" help="Enable, disable, or reset to default" ptype="SUBCOMMAND" mode="switch">
+        <PARAM name="enable" help="Enable debug" ptype="SUBCOMMAND" mode="subcommand"> </PARAM>
+        <PARAM name="disable" help="Disable debug" ptype="SUBCOMMAND" mode="subcommand"> </PARAM>
+        <PARAM name="default" help="Reset debug to default" ptype="SUBCOMMAND" mode="subcommand"> </PARAM>
+      </PARAM>
+      <ACTION builtin="clish_pyobj">sonic_cli_aaa patch_openconfig_aaa_aaa_authentication_config_debug ${debug-option} </ACTION>
+    </COMMAND>
+
+    <!-- aaa authentication login -->
+    <COMMAND name="aaa authentication login" help="Switch login authentication methods">
+      <PARAM name="auth-method" help="Authentication method" ptype="SUBCOMMAND" mode="switch">
+        <PARAM name="tacacs+" help="Use TACACS+ authentication" ptype="SUBCOMMAND" mode="subcommand">
+          <PARAM name="auth-method2-tacacs" help="Second authentication method (optional)" ptype="SUBCOMMAND" mode="switch" optional="true">
+            <PARAM name="local" help="Use local authentication as fallback" ptype="SUBCOMMAND" mode="subcommand"> </PARAM>
+          </PARAM>
+        </PARAM>
+        <PARAM name="radius" help="Use RADIUS authentication" ptype="SUBCOMMAND" mode="subcommand">
+          <PARAM name="auth-method2-radius" help="Second authentication method (optional)" ptype="SUBCOMMAND" mode="switch" optional="true">
+            <PARAM name="local" help="Use local authentication as fallback" ptype="SUBCOMMAND" mode="subcommand"> </PARAM>
+          </PARAM>
+        </PARAM>
+        <PARAM name="ldap" help="Use LDAP authentication" ptype="SUBCOMMAND" mode="subcommand">
+          <PARAM name="auth-method2-ldap" help="Second authentication method (optional)" ptype="SUBCOMMAND" mode="switch" optional="true">
+            <PARAM name="local" help="Use local authentication as fallback" ptype="SUBCOMMAND" mode="subcommand"> </PARAM>
+          </PARAM>
+        </PARAM>
+        <PARAM name="local" help="Use local authentication" ptype="SUBCOMMAND" mode="subcommand">
+          <PARAM name="auth-method2-local" help="Second authentication method (optional)" ptype="SUBCOMMAND" mode="switch" optional="true">
+            <PARAM name="tacacs+" help="Use TACACS+ as fallback" ptype="SUBCOMMAND" mode="subcommand"> </PARAM>
+            <PARAM name="radius" help="Use RADIUS as fallback" ptype="SUBCOMMAND" mode="subcommand"> </PARAM>
+            <PARAM name="ldap" help="Use LDAP as fallback" ptype="SUBCOMMAND" mode="subcommand"> </PARAM>
+          </PARAM>
+        </PARAM>
+        <PARAM name="default" help="Reset login methods to default" ptype="SUBCOMMAND" mode="subcommand"> </PARAM>
+      </PARAM>
+      <ACTION builtin="clish_pyobj">sonic_cli_aaa patch_openconfig_aaa_aaa_authentication_config_authentication_method ${auth-method} ${__params} </ACTION>
+    </COMMAND>
+
+    <!-- aaa authorization -->
+    <COMMAND name="aaa authorization" help="AAA authorization configuration">
+      <PARAM name="authz-method" help="Authorization method" ptype="SUBCOMMAND" mode="switch">
+        <PARAM name="tacacs+" help="Use TACACS+ authorization" ptype="SUBCOMMAND" mode="subcommand">
+          <PARAM name="authz-method2-tacacs" help="Second authorization method (optional)" ptype="SUBCOMMAND" mode="switch" optional="true">
+            <PARAM name="local" help="Use local authorization as fallback" ptype="SUBCOMMAND" mode="subcommand"> </PARAM>
+          </PARAM>
+        </PARAM>
+        <PARAM name="local" help="Use local authorization" ptype="SUBCOMMAND" mode="subcommand"> </PARAM>
+      </PARAM>
+      <ACTION builtin="clish_pyobj">sonic_cli_aaa patch_openconfig_aaa_aaa_authorization_config_authorization_method ${authz-method} ${__params} </ACTION>
+    </COMMAND>
+
+    <!-- aaa accounting -->
+    <COMMAND name="aaa accounting" help="AAA accounting configuration">
+      <PARAM name="acct-method" help="Accounting method" ptype="SUBCOMMAND" mode="switch">
+        <PARAM name="tacacs+" help="Use TACACS+ accounting" ptype="SUBCOMMAND" mode="subcommand">
+          <PARAM name="acct-method2-tacacs" help="Second accounting method (optional)" ptype="SUBCOMMAND" mode="switch" optional="true">
+            <PARAM name="local" help="Use local accounting as fallback" ptype="SUBCOMMAND" mode="subcommand"> </PARAM>
+          </PARAM>
+        </PARAM>
+        <PARAM name="local" help="Use local accounting" ptype="SUBCOMMAND" mode="subcommand"> </PARAM>
+        <PARAM name="disable" help="Disable accounting" ptype="SUBCOMMAND" mode="subcommand"> </PARAM>
+      </PARAM>
+      <ACTION builtin="clish_pyobj">sonic_cli_aaa patch_openconfig_aaa_aaa_accounting_config_accounting_method ${acct-method} ${__params} </ACTION>
+    </COMMAND>
+  </VIEW>
+
+  <!--MODE : show commands view -->
+  <VIEW name="enable-view">
+    <COMMAND name="show aaa" help="Show AAA configuration">
+      <ACTION builtin="clish_pyobj">sonic_cli_aaa get_openconfig_aaa_aaa show_aaa.j2 </ACTION>
+    </COMMAND>
+  </VIEW>
+
+</CLISH_MODULE>
