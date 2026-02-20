@@ -1,0 +1,49 @@
+{% if json_output %}
+{% set aaa = json_output.get("openconfig-aaa:aaa", json_output) %}
+
+{% set auth_config = {} %}
+{% if "authentication" in aaa and "config" in aaa["authentication"] %}
+{% set auth_config = aaa["authentication"]["config"] %}
+{% endif %}
+
+{% set authz_config = {} %}
+{% if "authorization" in aaa and "config" in aaa["authorization"] %}
+{% set authz_config = aaa["authorization"]["config"] %}
+{% endif %}
+
+{% set acct_config = {} %}
+{% if "accounting" in aaa and "config" in aaa["accounting"] %}
+{% set acct_config = aaa["accounting"]["config"] %}
+{% endif %}
+
+{% if "authentication-method" in auth_config %}
+AAA authentication login {{ auth_config["authentication-method"] | join(", ") }}
+{% else %}
+AAA authentication login local (default)
+{% endif %}
+
+{% if "failthrough" in auth_config %}
+AAA authentication failthrough {{ auth_config["failthrough"] }}
+{% else %}
+AAA authentication failthrough False (default)
+{% endif %}
+
+{% if "fallback" in auth_config %}
+AAA authentication fallback {{ auth_config["fallback"] }}
+{% else %}
+AAA authentication fallback False (default)
+{% endif %}
+
+{% if "debug" in auth_config %}
+AAA authentication debug {{ auth_config["debug"] }}
+{% endif %}
+
+{% if "authorization-method" in authz_config %}
+AAA authorization login {{ authz_config["authorization-method"] | join(", ") }}
+{% endif %}
+
+{% if "accounting-method" in acct_config %}
+AAA accounting login {{ acct_config["accounting-method"] | join(", ") }}
+{% endif %}
+
+{% endif %}

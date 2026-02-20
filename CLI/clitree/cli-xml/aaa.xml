@@ -1,0 +1,130 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE CLISH_MODULE [
+]>
+<CLISH_MODULE xmlns="http://www.dellemc.com/sonic/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xi="http://www.w3.org/2001/XInclude" xsi:schemaLocation="http://www.dellemc.com/sonic/XMLSchema http://www.dellemc.com/sonic/XMLSchema/clish.xsd">
+
+  <!--=======================================================-->
+  <!-- AAA PTYPE definitions                                  -->
+  <!--=======================================================-->
+  <PTYPE
+      name="AAA_ENABLE_DISABLE_DEFAULT"
+      method="select"
+      pattern="enable(enable) disable(disable) default(default)"
+      help="enable|disable|default"
+      />
+  <PTYPE
+      name="AAA_ENABLE_DISABLE"
+      method="select"
+      pattern="enable(enable) disable(disable)"
+      help="enable|disable"
+      />
+  <PTYPE
+      name="AAA_AUTH_METHOD"
+      method="select"
+      pattern="tacacs+(tacacs+) local(local) radius(radius) ldap(ldap) default(default)"
+      help="tacacs+|local|radius|ldap|default"
+      />
+  <PTYPE
+      name="AAA_AUTHORIZATION_PROTOCOL"
+      method="select"
+      pattern="tacacs+(tacacs+) local(local)"
+      help="tacacs+|local"
+      />
+  <PTYPE
+      name="AAA_ACCOUNTING_PROTOCOL"
+      method="select"
+      pattern="tacacs+(tacacs+) local(local) disable(disable)"
+      help="tacacs+|local|disable"
+      />
+
+  <!--=======================================================-->
+  <!-- MODE: config terminal - AAA commands                   -->
+  <!--=======================================================-->
+  <VIEW name="configure-view">
+    <!-- aaa root command -->
+    <COMMAND name="aaa" help="AAA configuration"> </COMMAND>
+
+    <!-- aaa authentication -->
+    <COMMAND name="aaa authentication" help="AAA authentication configuration"> </COMMAND>
+
+    <!-- aaa authentication failthrough -->
+    <COMMAND name="aaa authentication failthrough" help="Set AAA authentication failthrough">
+      <PARAM name="failthrough-option" help="Enable, disable, or set default failthrough" ptype="AAA_ENABLE_DISABLE_DEFAULT"> </PARAM>
+      <ACTION builtin="clish_pyobj">sonic_cli_aaa patch_openconfig_aaa_aaa_authentication_config_failthrough ${failthrough-option} </ACTION>
+    </COMMAND>
+
+    <!-- aaa authentication fallback -->
+    <COMMAND name="aaa authentication fallback" help="Set AAA authentication fallback">
+      <PARAM name="fallback-option" help="Enable or disable fallback" ptype="AAA_ENABLE_DISABLE"> </PARAM>
+      <ACTION builtin="clish_pyobj">sonic_cli_aaa patch_openconfig_aaa_aaa_authentication_config_fallback ${fallback-option} </ACTION>
+    </COMMAND>
+
+    <!-- aaa authentication debug -->
+    <COMMAND name="aaa authentication debug" help="Set AAA authentication debug mode">
+      <PARAM name="debug-option" help="Enable or disable debug" ptype="AAA_ENABLE_DISABLE"> </PARAM>
+      <ACTION builtin="clish_pyobj">sonic_cli_aaa patch_openconfig_aaa_aaa_authentication_config_debug ${debug-option} </ACTION>
+    </COMMAND>
+
+    <!-- aaa authentication login -->
+    <COMMAND name="aaa authentication login" help="Set AAA authentication login methods">
+      <PARAM name="auth-method1" help="First authentication method" ptype="AAA_AUTH_METHOD">
+        <PARAM name="auth-method2" help="Second authentication method (optional)" ptype="AAA_AUTH_METHOD" optional="true">
+          <PARAM name="auth-method3" help="Third authentication method (optional)" ptype="AAA_AUTH_METHOD" optional="true">
+            <PARAM name="auth-method4" help="Fourth authentication method (optional)" ptype="AAA_AUTH_METHOD" optional="true">
+              <PARAM name="auth-method5" help="Fifth authentication method (optional)" ptype="AAA_AUTH_METHOD" optional="true"> </PARAM>
+            </PARAM>
+          </PARAM>
+        </PARAM>
+      </PARAM>
+      <ACTION builtin="clish_pyobj">sonic_cli_aaa patch_openconfig_aaa_aaa_authentication_config_authentication_method ${auth-method1} ${auth-method2} ${auth-method3} ${auth-method4} ${auth-method5} </ACTION>
+    </COMMAND>
+
+    <!-- aaa authorization -->
+    <COMMAND name="aaa authorization" help="AAA authorization configuration"> </COMMAND>
+    <COMMAND name="aaa authorization login" help="Set AAA authorization login method">
+      <PARAM name="authz-method" help="Authorization method" ptype="AAA_AUTHORIZATION_PROTOCOL"> </PARAM>
+      <ACTION builtin="clish_pyobj">sonic_cli_aaa patch_openconfig_aaa_aaa_authorization_config_authorization_method ${authz-method} </ACTION>
+    </COMMAND>
+
+    <!-- aaa accounting -->
+    <COMMAND name="aaa accounting" help="AAA accounting configuration"> </COMMAND>
+    <COMMAND name="aaa accounting login" help="Set AAA accounting login method">
+      <PARAM name="acct-method" help="Accounting method" ptype="AAA_ACCOUNTING_PROTOCOL"> </PARAM>
+      <ACTION builtin="clish_pyobj">sonic_cli_aaa patch_openconfig_aaa_aaa_accounting_config_accounting_method ${acct-method} </ACTION>
+    </COMMAND>
+
+    <!-- no aaa commands -->
+    <COMMAND name="no aaa" help="Remove AAA configuration"> </COMMAND>
+    <COMMAND name="no aaa authentication" help="Remove AAA authentication configuration"> </COMMAND>
+    <COMMAND name="no aaa authentication failthrough" help="Reset AAA authentication failthrough to default">
+      <ACTION builtin="clish_pyobj">sonic_cli_aaa delete_openconfig_aaa_aaa_authentication_config_failthrough </ACTION>
+    </COMMAND>
+    <COMMAND name="no aaa authentication fallback" help="Reset AAA authentication fallback to default">
+      <ACTION builtin="clish_pyobj">sonic_cli_aaa delete_openconfig_aaa_aaa_authentication_config_fallback </ACTION>
+    </COMMAND>
+    <COMMAND name="no aaa authentication debug" help="Reset AAA authentication debug to default">
+      <ACTION builtin="clish_pyobj">sonic_cli_aaa delete_openconfig_aaa_aaa_authentication_config_debug </ACTION>
+    </COMMAND>
+    <COMMAND name="no aaa authentication login" help="Reset AAA authentication login to default">
+      <ACTION builtin="clish_pyobj">sonic_cli_aaa delete_openconfig_aaa_aaa_authentication_config_authentication_method </ACTION>
+    </COMMAND>
+    <COMMAND name="no aaa authorization" help="Remove AAA authorization configuration"> </COMMAND>
+    <COMMAND name="no aaa authorization login" help="Reset AAA authorization login to default">
+      <ACTION builtin="clish_pyobj">sonic_cli_aaa delete_openconfig_aaa_aaa_authorization_config_authorization_method </ACTION>
+    </COMMAND>
+    <COMMAND name="no aaa accounting" help="Remove AAA accounting configuration"> </COMMAND>
+    <COMMAND name="no aaa accounting login" help="Reset AAA accounting login to default">
+      <ACTION builtin="clish_pyobj">sonic_cli_aaa delete_openconfig_aaa_aaa_accounting_config_accounting_method </ACTION>
+    </COMMAND>
+  </VIEW>
+
+  <!--=======================================================-->
+  <!-- MODE: show commands - AAA                              -->
+  <!--=======================================================-->
+  <VIEW name="enable-view">
+    <COMMAND name="show aaa" help="Show AAA configuration">
+      <ACTION builtin="clish_pyobj">sonic_cli_aaa get_openconfig_aaa_aaa show_aaa.j2 </ACTION>
+    </COMMAND>
+  </VIEW>
+
+</CLISH_MODULE>
