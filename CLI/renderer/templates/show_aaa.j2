@@ -4,7 +4,9 @@
 {% set authz = {} %}
 {% set acct = {} %}
 
-{% if "openconfig-aaa:aaa" in aaa %}
+{% if "openconfig-system:aaa" in aaa %}
+{% set aaa = aaa["openconfig-system:aaa"] %}
+{% elif "openconfig-aaa:aaa" in aaa %}
 {% set aaa = aaa["openconfig-aaa:aaa"] %}
 {% endif %}
 
@@ -37,15 +39,21 @@ AAA authentication login {{ auth["authentication-method"]|join(",") }}
 {% else %}
 AAA authentication login local (default)
 {% endif %}
-{% if "failthrough" in auth %}
+{% if "openconfig-aaa-ext:failthrough" in auth %}
+AAA authentication failthrough {{ auth["openconfig-aaa-ext:failthrough"] }}
+{% elif "failthrough" in auth %}
 AAA authentication failthrough {{ auth["failthrough"] }}
 {% else %}
 AAA authentication failthrough False (default)
 {% endif %}
-{% if "fallback" in auth %}
+{% if "openconfig-aaa-ext:fallback" in auth %}
+AAA authentication fallback {{ auth["openconfig-aaa-ext:fallback"] }}
+{% elif "fallback" in auth %}
 AAA authentication fallback {{ auth["fallback"] }}
 {% endif %}
-{% if "debug" in auth %}
+{% if "openconfig-aaa-ext:debug" in auth %}
+AAA authentication debug {{ auth["openconfig-aaa-ext:debug"] }}
+{% elif "debug" in auth %}
 AAA authentication debug {{ auth["debug"] }}
 {% endif %}
 {% if "authorization-method" in authz %}
